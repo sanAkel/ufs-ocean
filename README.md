@@ -11,5 +11,5 @@ git clone --recursive git@github.com:sanAkel/ufs-ocean.git
 
 ```
 cd ufs-ocean/scripts
-./compile_ufs.sh <Full path to the location of the UFS Weather Model source code>
+./compile_ufs.sh <Full path to the location of the UFS Weather Model source code> |& tee build.log
 ```
