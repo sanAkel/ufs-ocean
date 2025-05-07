@@ -4,12 +4,17 @@ To develop the ocean and sea ice (or, _marine_) parts of the [UFS Weather Model.
 # To clone
 
 ```
-git clone --recursive git@github.com:sanAkel/ufs-ocean.git
+git clone --jobs 4 --recursive git@github.com:sanAkel/ufs-ocean.git
 ```
 
 # To build
 
 ```
 cd ufs-ocean/scripts
-./compile_ufs.sh <Full path to the location of the UFS Weather Model source code> |& tee build.log
+./compile_ufs.sh <Full path to the UFS Weather Model source code> |& tee build.log
 ```
+
+- For example:
+  ```
+  ./compile_ufs.sh /autofs/ncrc-svm1_home1/Santha.Akella/collab-work/ufs-ocean/sorc/ufs-weather-model |& tee build.log
+  ```
