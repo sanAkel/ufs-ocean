@@ -1,2 +1,2 @@
-# ufs-ocean
-Ocean and sea ice modeling in relation to the Unified Forecast System (UFS)
+# Purpose
+To develop the ocean and sea ice (or, _marine_) parts of the [UFS Weather Model.](https://github.com/ufs-community/ufs-weather-model)
