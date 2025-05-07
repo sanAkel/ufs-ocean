@@ -97,7 +97,7 @@ if [[ ! -f "./tests/ufs_common.lua" ]]; then cp "./modulefiles/ufs_common.lua" .
 
 echo " "
 echo " "
-echo "Find ${EXEC_NAME} at ${UFSsrc}/tests/${BUILD_NAME}.exe"
+echo "Find ${EXEC_NAME} at ${UFSsrc}/tests/"
 echo "All done!"
 exit 0
 
