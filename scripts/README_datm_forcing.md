@@ -15,11 +15,11 @@ real-time servers (NOMADS) based on availability and location.
 ### `stage_gdas.py`
 The core Python utility that manages the retrieval of GRIB2 data.
 * **Tiered Retrieval:** It attempts to find data in order: **HPSS** (Archive) -> **AWS S3** (Cloud) -> **NOMADS** (Live).
-* **Directory Flattening:** When retrieving from HPSS (which uses a nested directory 
-structure inside tarbundles), the script automatically extracts and flattens 
-the files into the target directory to maintain a clean structure.
+* **Directory Structure:** Files are stored in subdirectories named by their **Valid Time** (`YYYYMMDDHH`).
+* **Naming Convention:** Files are prefixed with `rtofs.` (e.g., `rtofs.gdas.t00z.sfluxgrbf001.grib2`).
 * **Hourly vs. 3-Hourly:** It prioritizes the full hourly forecast suite ($f001$ through $f006$) 
 when available (HPSS/NOMADS), but falls back to 3-hourly subsets on AWS.
+
 
 ### `run_stage_gdas.sh`
 A Bash driver script used to process long time series. 
@@ -28,9 +28,15 @@ A Bash driver script used to process long time series.
 * Creates isolated output directories for each cycle within a specified base path.
 
 ### Example Usage:
-- WCOSS: ` ./run_stage_gdas.sh 20250801 20250805 WCOSS /lfs/h2/emc/stmp/santha.akella/TEST_FORCING/`
-- C6: `./run_stage_gdas.sh 20260101 20260102 GAEA_C6 /autofs/ncrc-svm1_proj/sfs-cpu/Santha.Akella/TEST2/`
-- URSA: `./run_stage_gdas.sh 20250601 20250602 URSA /scratch5/NCEPDEV/rstprod/Santha.Akella/TEST/`
+The Bash driver requires: `START_YYYYMMDD`, `END_YYYYMMDD`, `PLATFORM`, and `BASE_PATH`.
+
+* **WCOSS:**
+  `./run_stage_gdas.sh 20250801 20250805 WCOSS /lfs/h2/emc/stmp/santha.akella/FORCING/`
+* **GAEA C6:**
+  `./run_stage_gdas.sh 20260101 20260102 GAEA_C6 /autofs/ncrc-svm1_proj/sfs-cpu/Santha.Akella/FORCING/`
+* **URSA:**
+  `./run_stage_gdas.sh 20250601 20250602 URSA /scratch5/NCEPDEV/rstprod/Santha.Akella/FORCING/`
+
 ---
 
 ## 2. Requirements & Setup
