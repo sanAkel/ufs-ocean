@@ -30,8 +30,8 @@ def organize_for_rtofs(PDY, CYC, fhr, source_path, base_dest):
     shutil.move(source_path, target_path)
     print(f"   -> Staged to: {target_path}")
 
-def stage_gdas(PDY, CYC, destination, platform, max_fhr=6):
-    print(f"--- Execution Platform: {platform} ---")
+def stage_gdas(PDY, CYC, destination, platform, max_fhr=6, threads=4):
+    print(f"--- Execution Platform: {platform} (Threads: {threads}) ---")
     run_date = datetime.datetime.strptime(PDY, '%Y%m%d').date()
     today = datetime.date.today()
     days_old = (today - run_date).days
@@ -39,7 +39,7 @@ def stage_gdas(PDY, CYC, destination, platform, max_fhr=6):
     # Tier 1: HPSS (WCOSS/URSA)
     if platform in ["WCOSS", "URSA"] and days_old >= 2 and shutil.which('htar'):
         print(f"--- Attempting HPSS Retrieval for {PDY} ---")
-        return stage_hpss(PDY, CYC, destination, max_fhr)
+        return stage_hpss(PDY, CYC, destination, max_fhr, threads)
 
     # Tier 2: AWS (GAEA_C6/COLAB)
     if days_old >= 1:
@@ -50,7 +50,7 @@ def stage_gdas(PDY, CYC, destination, platform, max_fhr=6):
     print(f"--- Attempting NOMADS Retrieval for {PDY} ---")
     return stage_nomads(PDY, CYC, destination, max_fhr)
 
-def stage_hpss(PDY, CYC, destination, max_fhr):
+def stage_hpss(PDY, CYC, destination, max_fhr, threads):
     year, month = PDY[:4], PDY[:6]
     tar = f"/NCEPPROD/hpssprod/runhistory/rh{year}/{month}/{PDY}/com_gfs_v16.3_gdas.{PDY}_{CYC}.gdas_flux.tar"
     
@@ -65,7 +65,8 @@ def stage_hpss(PDY, CYC, destination, max_fhr):
     os.chdir(tmp_extract)
     
     # Run retrieval
-    subprocess.run(["htar", "-xvf", tar] + members)
+    #subprocess.run(["htar", "-xvf", tar] + members)
+    subprocess.run(["htar", "-T", str(threads), "-xvf", tar] + members)
     
     # Locate and organize the files
     for fpath in glob.glob("**/*.grib2", recursive=True):
@@ -127,8 +128,9 @@ if __name__ == "__main__":
     parser.add_argument("-o", "--out", required=True, help="Base output directory")
     parser.add_argument("--platform", required=True)
     parser.add_argument("--max_fhr", type=int, default=6, help="Max forecast hour to stage")
+    parser.add_argument("--threads", type=int, default=4, help="Number of parallel threads")
 
     args = parser.parse_args()
 
     # Ensure platform name is standardized for logic checks
-    stage_gdas(args.pdy, args.cyc, args.out, args.platform.upper(), args.max_fhr)
+    stage_gdas(args.pdy, args.cyc, args.out, args.platform.upper(), args.max_fhr, args.threads)
