@@ -37,6 +37,7 @@ while [ "$current_s" -le "$end_s" ]; do
         
         if [ $? -ne 0 ]; then
             echo "WARNING: Staging failed for cycle ${PDY}${CYC}"
+            exit 2
         fi
     done
     
@@ -46,3 +47,5 @@ done
 echo "----------------------------------------------------------"
 echo " Batch processing completed."
 echo "----------------------------------------------------------"
+
+exit 0

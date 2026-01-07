@@ -65,7 +65,6 @@ def stage_hpss(PDY, CYC, destination, max_fhr, threads):
     os.chdir(tmp_extract)
     
     # Run retrieval
-    #subprocess.run(["htar", "-xvf", tar] + members)
     subprocess.run(["htar", "-T", str(threads), "-xvf", tar] + members)
     
     # Locate and organize the files
@@ -126,11 +125,12 @@ if __name__ == "__main__":
     parser.add_argument("-p", "--pdy", required=True, help="YYYYMMDD")
     parser.add_argument("-c", "--cyc", required=True, help="Cycle HH")
     parser.add_argument("-o", "--out", required=True, help="Base output directory")
-    parser.add_argument("--platform", required=True)
+    parser.add_argument("--platform",  required=True, help="Choices: WCOSS, GAEA_C6, URSA, COLAB")
     parser.add_argument("--max_fhr", type=int, default=6, help="Max forecast hour to stage")
     parser.add_argument("--threads", type=int, default=4, help="Number of parallel threads")
 
     args = parser.parse_args()
 
     # Ensure platform name is standardized for logic checks
-    stage_gdas(args.pdy, args.cyc, args.out, args.platform.upper(), args.max_fhr, args.threads)
+    success = stage_gdas(args.pdy, args.cyc, args.out, args.platform.upper(), args.max_fhr, args.threads)
+    if not success: exit(1)
