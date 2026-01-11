@@ -5,9 +5,10 @@
   2. Then modify it based on what is actually used by [datm_datamode_gefs_mod.F90](https://github.com/NOAA-EMC/CDEPS/blob/9f53664ef2e607ad25d6b6c939f2eac9ec818ee6/datm/datm_datamode_gefs_mod.F90#L118-L156)
 
 ## Notes:
-  - Most variables are mapped directly, i.e., GFS -> DATM.
-  - A few of them are needed for calculating final output: TMP_SFC, PRATE, CPOFP.
   - Information in the following tables (columns 2 and 3) is from the above (i.e., ufs-weather-model and datm_datamode_gefs_mod.F90).
+  - Most variables are mapped directly, i.e., GFS -> DATM.
+  - Some need other variables to calculate final output: TMP_SFC, PRATE, CPOFP.
+  - Precipation (liquid and frozen from PRATE) and radiation are averaged; noted (`True`) in the last column.
   - [GFS pressure levels are defined here; see `HGT:1`.](https://www.emc.ncep.noaa.gov/gmb/wx24fy/misc/GFS127_profile/hyblev_gfsC128.txt)
 
 
@@ -18,26 +19,26 @@
 | :UGRD:1 hybrid level:    | ugrd_hyblev1 | Sa_u       | None | False |
 | :VGRD:1 hybrid level:    | vgrd_hyblev1 | Sa_v       | None | False |
 | :TMP:1 hybrid level:     | tmp_hyblev1  | Sa_tbot    | None | False |
-| :PRES:1 hybrid level:    | pres_hyblev1 | Sa_pbot    | None | False |
+| :PRES:surface:           | pres_hyblev1 | Sa_pbot    | None | False |
 | :SPFH:1 hybrid level:    | spfh_hyblev1 | Sa_shum    | where < 0 = 0. | False |
 | :UGRD:10 m above ground: | u10m         | Sa_u10m    | None | False |
 | :VGRD:10 m above ground: | v10m         | Sa_v10m    | None | False |
 | :SPFH:2 m above ground:  | q2m          | Sa_q2m     | where <0 = 0. | False |
-| PRES:surface             | psurf        | Sa_pslv    | None | False |
-| DLWRF:surface            | DLWRF        | Faxa_lwdn  | None | False |
-| VBDSF:surface            | vbdsf_ave    | Faxa_swvdr | where < 0 = 0. | True |
-| VDDSF:surface            | vddsf_ave    | Faxa_swvdf | where < 0 = 0. | True |
-| NBDSF:surface            | nbdsf_ave    | Faxa_swndr | where < 0 = 0. | True |
-| NDDSF:surface            | nddsf_ave    | Faxa_swndf | where < 0 = 0. | True |
+| :PRES:surface:           | psurf        | Sa_pslv    | None | False |
+| :DLWRF:surface:0-1 hour ave fcst:  | DLWRF        | Faxa_lwdn  | None. Conform sign          | True |
+| :VBDSF:surface:0-1 hour ave fcst:  | vbdsf_ave    | Faxa_swvdr | where < 0 = 0. Confirm sign | True | 
+| :VDDSF:surface:0-1 hour ave fcst:  | vddsf_ave    | Faxa_swvdf | where < 0 = 0. Confirm sign | True | 
+| :NBDSF:surface:0-1 hour ave fcst:  | nbdsf_ave    | Faxa_swndr | where < 0 = 0. Confirm sign | True | 
+| :NDDSF:surface:0-1 hour ave fcst:  | nddsf_ave    | Faxa_swndf | where < 0 = 0. Confirm sign | True | 
 
 # Indirectely mapped variables
 | GRIB2 | NetCDF forcing file variable name | Name in `datm_datamode_gefs_mod.F90`  | Checks and/or changes | Avg forecast | 
 | :---  | :--- | :--- | :--- | :-- |
-| :HGT:1 hybrid level:     | N/A         | N/A      | None | False |
-| ??                       | hgt_hyblev1 | Sa_z     | Do ?? with HGT_1hybridlevel | False |
-| :TMP:surface:          | N/A          | N/A        | None | False
-| :TMP:2 m above ground: | t2m          | Sa_t2m     | where (TMP_SFC <= 271.35) t2m = 271.35 + t2m - TMP_SFC | False |
-| PRATE:surface          | N/A          | N/A        | Total precip. where < 0 = 0. | True |
-| CPOFP:surface          | N/A          | N/A        | Used to calculate partition of liquid/frozen precip |    
-| N/A                    | precp        | Faxa_rain  | PRATE * (1-CPOFP*0.01) | True |
-| N/A                    | frecp        | Faxa_snow  | PRATE *    CPOFP*0.01  | True |
+| :HGT:1 hybrid level:     | N/A         | N/A       | None | False |
+| ??                       | hgt_hyblev1 | Sa_z      | Do ?? with HGT_1hybridlevel | False |
+| :TMP:surface:            | N/A         | N/A       | None | False
+| :TMP:2 m above ground:   | t2m         | Sa_t2m    | where (TMP_SFC <= 271.35) t2m = 271.35 + t2m - TMP_SFC | False |
+| :PRATE:surface:0-1 hour ave fcst:      | N/A       | N/A       | Total precip. where < 0 = 0. | True |
+| :CPOFP:surface:1 hour fcst:            | N/A       | N/A       | Used to calculate partition of liquid/frozen precip | False |
+| N/A                      | precp       | Faxa_rain | PRATE * (1-CPOFP*0.01) | True |
+| N/A                      | fprecp      | Faxa_snow | PRATE *    CPOFP*0.01  | True |
