@@ -57,6 +57,7 @@ case "${MACHINE_ID}" in
         ;;
     "wcoss2")
         module load wgrib2/2.0.8
+        module load nco/5.2.4
         ;;
     "hera")
         module load wgrib2/3.1.1_ncep
