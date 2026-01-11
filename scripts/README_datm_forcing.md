@@ -1,4 +1,4 @@
-# GDAS DATM Forcing Staging Toolkit
+# GDAS DATM Forcing Staging
 
 Tools to automate the staging of GDAS `sflux` (surface flux) GRIB2 files.
 These files are typically used to generate atmospheric forcing for ocean models
@@ -48,6 +48,8 @@ The Bash driver requires: `START_YYYYMMDD`, `END_YYYYMMDD`, `PLATFORM`, and `BAS
 | **COLAB** | AWS S3 | Drive mounted, `pip install boto3` |
 
 **Note:** Ensure both scripts have execution permissions: `chmod +x stage_gdas.py run_stage_gdas.sh`
+
+---
 
 # GDAS DATM Forcing Extraction
 
