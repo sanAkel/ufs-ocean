@@ -64,10 +64,14 @@ The Bash driver requires: `START_YYYYMMDD`, `END_YYYYMMDD`, `PLATFORM`, and `BAS
 Extraction of specific variables from the staged `sflux` grib2 files into NetCDF.
 * **Search String:** Uses `wgrib2` with a concatenated regex string to extract instantaneous state variables, averaged fluxes, and temperatures.
 * **Purge Option:** Optional flag to delete source GRIB2 files after successful conversion.
+* **Parallel Option:** Optional flag to run in parallel, default: True.
 
 ### Example Usage:
 
-`./run_extract_gdas.sh 20260101 20260102 /path/to/FORCING/ TRUE`
+ * **Default (Parallel):**
+   `./run_extract_gdas.sh 20260101 20260102 /path/to/FORCING/ TRUE TRUE`
+ * **Serial Mode (for debugging):**
+   `./run_extract_gdas.sh 20260101 20260102 /path/to/FORCING/ TRUE FALSE`
 
 ```
 <BASE_PATH>/
