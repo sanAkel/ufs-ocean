@@ -1,7 +1,7 @@
 #!/bin/bash
 #==============================================================================
 # Script: run_extract_gdas.sh
-# Purpose: Extraction with precise record matching
+# Purpose: Extraction of variables from sflux grib2 file(s)
 #==============================================================================
 
 exit_err() {
@@ -20,19 +20,17 @@ BASE_PATH="${3}"
 PURGE_GRIB=${4:-"False"}
 
 # 1. List of variables from https://github.com/sanAkel/ufs-ocean/blob/main/scripts/grib_to_nc_mapping.md
-# A. Instantaneous state variables (HGT, PRES, LAND, Wind, Humidity)
+# A. Instantaneous state variables
 G_INST=':LAND:surface:|:UGRD:1 hybrid level:|:VGRD:1 hybrid level:|:TMP:1 hybrid level:|:PRES:surface:|:SPFH:1 hybrid level:|:UGRD:10 m above ground:|:VGRD:10 m above ground:|:SPFH:2 m above ground:|:HGT:1 hybrid level:|:TMP:surface:|:TMP:2 m above ground:|:CPOFP:surface:'
 
-# 2. Averaged Fluxes (DLWRF, VBDSF, VDDSF, NBDSF, NDDSF, PRATE)
-#G_FLUX=':DLWRF:surface:.*ave fcst:|:V[BD]DSF:surface:.*ave fcst:|:N[BD]DSF:surface:.*ave fcst:|:PRATE:surface:.*ave fcst:|:CPOFP:surface:'
+# 2. Averaged Fluxes
 G_FLUX=':DLWRF:surface:|:VBDSF:surface:|:VDDSF:surface:|:NBDSF:surface:|:NDDSF:surface:|:PRATE:surface:|:CPOFP:surface:'
 
-# C. Temperatures (matches surface, 2m, and hyb lev for any hour)
+# C. Temperatures
 G_TEMP=':TMP:(surface|2 m above ground|1 hybrid level):'
 
 # Concatenate them
 GRIB_SEARCH="${G_INST}|${G_FLUX}|${G_TEMP}"
-#GRIB_SEARCH="${G_INST}|${G_TEMP}"
 
 source "machine_modules.sh"
 
@@ -50,7 +48,6 @@ for grib_file in "${BASE_PATH}"/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]*/*.grib
       echo "Processing: ${grib_file}"
       # 2. Extract using wgrib2
       wgrib2 "${grib_file}" -match "${GRIB_SEARCH}" -netcdf "${output_nc}" || exit_err "wgrib2 failed on ${grib_file}"
-      #wgrib2 "${grib_file}" -egrep "${GRIB_SEARCH}" -netcdf "${output_nc}" || exit_err "wgrib2 failed on ${grib_file}"
 
       if [[ -f "${output_nc}" && -s "${output_nc}" ]]; then
         echo "   SUCCESS: Created $(basename "${output_nc}")"
