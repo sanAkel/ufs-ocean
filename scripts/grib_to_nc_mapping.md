@@ -6,7 +6,7 @@
 
 ## Notes:
   - Most variables are mapped directly, i.e., GFS -> DATM.
-  - A few of them needed for calculating final output: TMP_SFC, PRATE, CPOFP.
+  - A few of them are needed for calculating final output: TMP_SFC, PRATE, CPOFP.
   - Information in the following tables (columns 2 and 3) is from the above (i.e., ufs-weather-model and datm_datamode_gefs_mod.F90).
   - [GFS pressure levels are defined here; see `HGT:1`.](https://www.emc.ncep.noaa.gov/gmb/wx24fy/misc/GFS127_profile/hyblev_gfsC128.txt)
 
