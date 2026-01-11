@@ -15,7 +15,6 @@
 | GRIB2 | NetCDF forcing file variable name | Name in `datm_datamode_gefs_mod.F90`  | Checks and/or changes | Avg forecast | 
 | :--- | :--- | :--- | :--- | :-- |
 | :LAND:surface:           | slmsksfc     | Sa_mask    | None | False |
-| :HGT:1 hybrid level:     | hgt_hyblev1  | Sa_z       | None | False |
 | :UGRD:1 hybrid level:    | ugrd_hyblev1 | Sa_u       | None | False |
 | :VGRD:1 hybrid level:    | vgrd_hyblev1 | Sa_v       | None | False |
 | :TMP:1 hybrid level:     | tmp_hyblev1  | Sa_tbot    | None | False |
@@ -34,6 +33,8 @@
 # Indirectely mapped variables
 | GRIB2 | NetCDF forcing file variable name | Name in `datm_datamode_gefs_mod.F90`  | Checks and/or changes | Avg forecast | 
 | :---  | :--- | :--- | :--- | :-- |
+| :HGT:1 hybrid level:     | N/A         | N/A      | None | False |
+| ??                       | hgt_hyblev1 | Sa_z     | Do ?? with HGT_1hybridlevel | False |
 | :TMP:surface:          | N/A          | N/A        | None | False
 | :TMP:2 m above ground: | t2m          | Sa_t2m     | where (TMP_SFC <= 271.35) t2m = 271.35 + t2m - TMP_SFC | False |
 | PRATE:surface          | N/A          | N/A        | Total precip. where < 0 = 0. | True |

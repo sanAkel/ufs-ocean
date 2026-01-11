@@ -53,8 +53,7 @@ echo "Loading extra utilities for ${MACHINE_ID}..."
 case "${MACHINE_ID}" in
     "ursa")
         module load wgrib2/3.1.3_ncep
-        # You can add more Ursa-specific tools here
-        # module load nco/5.0.6
+        module load nco/5.2.4
         ;;
     "wcoss2")
         module load wgrib2/2.0.8
