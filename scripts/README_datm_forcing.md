@@ -49,3 +49,27 @@ The Bash driver requires: `START_YYYYMMDD`, `END_YYYYMMDD`, `PLATFORM`, and `BAS
 
 **Note:** Ensure both scripts have execution permissions: `chmod +x stage_gdas.py run_stage_gdas.sh`
 
+# GDAS DATM Forcing Extraction
+
+ - Use [the information in these tables](https://github.com/sanAkel/ufs-ocean/blob/main/scripts/grib_to_nc_mapping.md)
+ - To extract what we need from `sflux` files.
+
+---
+
+## 1. Script Descriptions
+
+### `run_extract_gdas.sh`
+Extraction of specific variables from the staged `sflux` grib2 files into NetCDF.
+* **Search String:** Uses `wgrib2` with a concatenated regex string to extract instantaneous state variables, averaged fluxes, and temperatures.
+* **Purge Option:** Optional flag to delete source GRIB2 files after successful conversion.
+
+### Example Usage:
+
+`./run_extract_gdas.sh 20260101 20260102 /path/to/FORCING/ TRUE`
+
+```
+<BASE_PATH>/
+└── YYYYMMDDHH/
+    ├── rtofs.gdas.tHHz.sfluxgrbfXXX.grib2  # Staged Data
+    └── rtofs.gdas.tHHz.sfluxgrbfXXX.nc     # Final Forcing
+```
