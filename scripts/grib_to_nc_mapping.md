@@ -1,4 +1,4 @@
-# Table of mapping variables from GFS (GRIB2) to UFS DATM (NetCDF) files
+# Table of mapping variables from GDAS/GFS (GRIB2) to UFS DATM (NetCDF) files
 
 ## How was it generated?
   1. Start with the [ufs-weather-model](https://github.com/ufs-community/ufs-weather-model/blob/e68bc46fdcec881b8aed5e7fa1e9fbe6aa1cb7b7/tests/parm/datm.streams.IN#L15)
@@ -36,7 +36,7 @@
 | :---  | :--- | :--- | :--- | :-- |
 | :HGT:1 hybrid level:     | N/A         | N/A       | None | False |
 | ??                       | hgt_hyblev1 | Sa_z      | Do ?? with HGT_1hybridlevel | False |
-| :TMP:surface:            | N/A         | N/A       | None | False
+| :TMP:surface:            | N/A         | N/A       | None | False |
 | :TMP:2 m above ground:   | t2m         | Sa_t2m    | where (TMP_SFC <= 271.35) t2m = 271.35 + t2m - TMP_SFC | False |
 | :PRATE:surface:          | N/A         | N/A       | Total precip. where < 0 = 0. | True |
 | :CPOFP:surface:          | N/A         | N/A       | Used to calculate partition of liquid/frozen precip | False |
