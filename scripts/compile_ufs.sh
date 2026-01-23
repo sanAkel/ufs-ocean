@@ -89,6 +89,7 @@ if [[ "${MACHINE_ID}" == "wcoss2" && "${PARALLEL_RESTART:-}" == "NO" ]]; then
       rm -rf "${BUILD_DIR}"
    fi
 else
+   MAKE_OPT+=" -DOpenMP_C_FLAGS=-qopenmp -DOpenMP_C_LIB_NAMES= -DOpenMP_CXX_FLAGS=-qopenmp -DOpenMP_CXX_LIB_NAMES= -DOpenMP_Fortran_FLAGS=-qopenmp -DOpenMP_Fortran_LIB_NAMES= -DCMAKE_EXE_LINKER_FLAGS=-qopenmp -DCMAKE_EXE_LINKER_FLAGS=-Wl,--allow-multiple-definition"
    BUILD_JOBS=${BUILD_JOBS:-8} ./tests/compile.sh "${MACHINE_ID}" "${MAKE_OPT}" "${COMPILE_ID}" "intel" "${CLEAN_BEFORE}" "${CLEAN_AFTER}"
 fi
 mv "./tests/fv3_${COMPILE_ID}.exe" "./tests/${EXEC_NAME}"
