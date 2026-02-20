@@ -5,7 +5,7 @@
   2. Then modify it based on what is actually used by [datm_datamode_gefs_mod.F90](https://github.com/NOAA-EMC/CDEPS/blob/9f53664ef2e607ad25d6b6c939f2eac9ec818ee6/datm/datm_datamode_gefs_mod.F90#L118-L156)
   3. Categorize (input) variables from GDAS/GFS based on their _level_: 
      `surface`, `1 hybrid level`, `2 m above ground`, `10 m above ground`. Note that the atmospheric model (used in GDAS/GFS) 
-     [pressure levels are defined here; see `HGT:1`.](https://www.emc.ncep.noaa.gov/gmb/wx24fy/misc/GFS127_profile/hyblev_gfsC128.txt)
+     [pressure levels are defined here.](https://www.emc.ncep.noaa.gov/gmb/wx24fy/misc/GFS127_profile/hyblev_gfsC128.txt)
      These pressure levels are relevant to `1 hybrid level`.
   4. Not all (output) variables used in the UFS DATM have a one-to-one mapping with inputs from GDAS/GFS.
      Those variables that are needed to construct outputs are marked with `N/A`.
