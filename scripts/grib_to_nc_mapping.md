@@ -17,7 +17,7 @@
 # Following is a listing of all input variables that are gathered from GDAS/GFS.
 
 ## Surface variables
-| GRIB2 | NetCDF forcing file variable name | Name in `datm_datamode_gefs_mod.F90`  | Checks and/or changes | Avg forecast | 
+| GRIB2 | NetCDF variable name | Name in `datm_datamode_gefs_mod.F90`  | Checks and/or changes | Avg forecast | 
 | :---  | :--- | :--- | :--- | :-- |
 | :LAND:surface:  | slmsksfc  | Sa_mask    | None                         | False |
 | :ICEC:surface:  | N/A       | N/A        | None                         | False | 
@@ -32,7 +32,7 @@
 | :PRATE:surface: | N/A       | N/A        | Total precip. where < 0 = 0. | True |
 
 ## Variables at the first hybrid (atmospheric pressure) level
-| GRIB2 | NetCDF forcing file variable name | Name in `datm_datamode_gefs_mod.F90`  | Checks and/or changes | Avg forecast | 
+| GRIB2 | NetCDF variable name | Name in `datm_datamode_gefs_mod.F90`  | Checks and/or changes | Avg forecast | 
 | :--- | :--- | :--- | :--- | :-- |
 | :HGT:1 hybrid level:  | N/A          | N/A      None  | False |
 | :UGRD:1 hybrid level: | ugrd_hyblev1 | Sa_u    | None | False |
@@ -41,13 +41,13 @@
 | :SPFH:1 hybrid level: | spfh_hyblev1 | Sa_shum | where < 0 = 0. | False |
 
 ## At 2 m above ground
-| GRIB2 | NetCDF forcing file variable name | Name in `datm_datamode_gefs_mod.F90`  | Checks and/or changes | Avg forecast | 
+| GRIB2 | NetCDF variable name | Name in `datm_datamode_gefs_mod.F90`  | Checks and/or changes | Avg forecast | 
 | :--- | :--- | :--- | :--- | :-- |
 | :TMP:2 m above ground:  | t2m  | Sa_t2m  | where (TMP_SFC <= 271.35) t2m = 271.35 + t2m - TMP_SFC | False |
 | :SPFH:2 m above ground: | q2m  | Sa_q2m  | where <0 = 0. | False |
 
 ## At 10 m above ground
-| GRIB2 | NetCDF forcing file variable name | Name in `datm_datamode_gefs_mod.F90`  | Checks and/or changes | Avg forecast | 
+| GRIB2 | NetCDF variable name | Name in `datm_datamode_gefs_mod.F90`  | Checks and/or changes | Avg forecast | 
 | :--- | :--- | :--- | :--- | :-- |
 | :UGRD:10 m above ground: | u10m | Sa_u10m | None | False |
 | :VGRD:10 m above ground: | v10m | Sa_v10m | None | False |
