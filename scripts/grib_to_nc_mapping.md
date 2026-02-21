@@ -2,7 +2,7 @@
 
 ## What variables does the UFS DATM need?
   1. Start with the [ufs-weather-model](https://github.com/ufs-community/ufs-weather-model/blob/e68bc46fdcec881b8aed5e7fa1e9fbe6aa1cb7b7/tests/parm/datm.streams.IN#L15)
-  2. Then modify it based on what is actually used by [datm_datamode_gefs_mod.F90](https://github.com/NOAA-EMC/CDEPS/blob/9f53664ef2e607ad25d6b6c939f2eac9ec818ee6/datm/datm_datamode_gefs_mod.F90#L118-L156)
+  2. Then modify the list based on what is actually used by [datm_datamode_gefs_mod.F90](https://github.com/NOAA-EMC/CDEPS/blob/9f53664ef2e607ad25d6b6c939f2eac9ec818ee6/datm/datm_datamode_gefs_mod.F90#L118-L156)
   3. Categorize (input) variables from GDAS/GFS based on their _level_: 
      `surface`, `1 hybrid level`, `2 m above ground`, `10 m above ground`. Note that the atmospheric model (used in GDAS/GFS) 
      [pressure levels are defined here.](https://www.emc.ncep.noaa.gov/gmb/wx24fy/misc/GFS127_profile/hyblev_gfsC128.txt)
@@ -14,9 +14,9 @@
 
 ---
 
-# Following is a listing of all input variables that are gathered from GDAS/GFS.
+## Following is a listing of all input variables that are gathered from GDAS/GFS.
 
-## Surface variables
+### Surface variables
 | GRIB2 | NetCDF variable name | Name in `datm_datamode_gefs_mod.F90`  | Checks and/or changes | Avg forecast | 
 | :---  | :--- | :--- | :--- | :-- |
 | :LAND:surface:  | slmsksfc  | Sa_mask    | None                         | False |
@@ -31,7 +31,7 @@
 | :CPOFP:surface: | N/A       | N/A        | Used to calculate partition of liquid/frozen precip | False |
 | :PRATE:surface: | N/A       | N/A        | Total precip. where < 0 = 0. | True |
 
-## Variables at the first hybrid (atmospheric pressure) level
+### Variables at the first hybrid (atmospheric pressure) level
 | GRIB2 | NetCDF variable name | Name in `datm_datamode_gefs_mod.F90`  | Checks and/or changes | Avg forecast | 
 | :--- | :--- | :--- | :--- | :-- |
 | :HGT:1 hybrid level:  | N/A          | N/A      None  | False |
@@ -40,13 +40,13 @@
 | :TMP:1 hybrid level:  | tmp_hyblev1  | Sa_tbot | None | False |
 | :SPFH:1 hybrid level: | spfh_hyblev1 | Sa_shum | where < 0 = 0. | False |
 
-## At 2 m above ground
+### At 2 m above ground
 | GRIB2 | NetCDF variable name | Name in `datm_datamode_gefs_mod.F90`  | Checks and/or changes | Avg forecast | 
 | :--- | :--- | :--- | :--- | :-- |
 | :TMP:2 m above ground:  | t2m  | Sa_t2m  | where (TMP_SFC <= 271.35) t2m = 271.35 + t2m - TMP_SFC | False |
 | :SPFH:2 m above ground: | q2m  | Sa_q2m  | where <0 = 0. | False |
 
-## At 10 m above ground
+### At 10 m above ground
 | GRIB2 | NetCDF variable name | Name in `datm_datamode_gefs_mod.F90`  | Checks and/or changes | Avg forecast | 
 | :--- | :--- | :--- | :--- | :-- |
 | :UGRD:10 m above ground: | u10m | Sa_u10m | None | False |
