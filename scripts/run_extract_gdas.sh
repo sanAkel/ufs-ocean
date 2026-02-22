@@ -44,7 +44,7 @@ process_file() {
     if [[ -f "${grib_file}" && -s "${grib_file}" ]]; then
       base_filename="${grib_file##*/}"
       dir_path="${grib_file%/*}"
-      output_nc="${dir_path}/${base_filename%.grib2}.nc"
+      output_nc="${dir_path}/wgrib_extr_${base_filename%.grib2}.nc"
 
       echo "Processing: ${grib_file}"
       # Extraction using wgrib2
