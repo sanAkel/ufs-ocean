@@ -39,6 +39,8 @@ Surface, At the first hybrid (atmospheric pressure) level, 2 m and 10 m above gr
 | **:UGRD:10 m above ground:** | `UGRD_10maboveground` | None | False |
 | **:VGRD:10 m above ground:** | `VGRD_10maboveground` | None | False |
 
+Use [run_extract_gdas.sh](https://github.com/sanAkel/ufs-ocean/blob/main/scripts/run_extract_gdas.sh) to gather above variables.
+
 ---
 
 
