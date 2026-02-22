@@ -15,52 +15,29 @@
 ---
 
 ## Following is a listing of all input variables that are gathered from GDAS/GFS.
+Surface, At the first hybrid (atmospheric pressure) level, 2 m and 10 m above ground
 
-### Surface variables
-GRIB2 variable name,wgrib2 to nc,Checks and/or changes,Avg forecast,,
--- | -- | -- | --
-:LAND:surface:  | LAND_surface  | None | False
-:PRES:surface:  | PRES_surface  | None | False
-:TMP:surface:   | TMP_surface   | None | False
-:DLWRF:surface: | DLWRF_surface | None. Conform sign | True
-:VBDSF:surface: | VBDSF_surface | where < 0 = 0. Confirm sign | True
-:VDDSF:surface: | VDDSF_surface | where < 0 = 0. Confirm sign | True
-:NBDSF:surface: | NBDSF_surface | where < 0 = 0. Confirm sign | True
-:NDDSF:surface: | NDDSF_surface | where < 0 = 0. Confirm sign | True
-:CPOFP:surface: | CPOFP_surface | Used to calculate partition of liquid/frozen precip | False
-:PRATE:surface: | PRATE_surface | Total precip. where < 0 = 0. | True
-
-
-### Variables at the first hybrid (atmospheric pressure) level
-GRIB2 variable name|wgrib2 to nc,Checks and/or changes,Avg forecast,,
--- | -- | -- | --
-:HGT:1 hybrid level:,HGT_1hybridlevel,None,False,,
-:UGRD:1 hybrid level:,UGRD_1hybridlevel,None,False,,
-:VGRD:1 hybrid level:,VGRD_1hybridlevel,None,False,,
-:TMP:1 hybrid level:,TMP_1hybridlevel,None,False,,
-:SPFH:1 hybrid level:,SPFH_1hybridlevel,where < 0 = 0.,False,,
-
-
-
-| GRIB2 variable name | wgrib2 to nc | DATM nc file | Name in `datm_datamode_gefs_mod.F90`  | Checks and/or changes | Avg forecast | 
-| :---  | :--- | :--- | :--- | :--- | :-- |
-| :HGT:1 hybrid level:  | HGT_1hybridlevel  | N/A          | N/A      None  | False |
-| :UGRD:1 hybrid level: | UGRD_1hybridlevel | ugrd_hyblev1 | Sa_u    | None | False |
-| :VGRD:1 hybrid level: | VGRD_1hybridlevel | vgrd_hyblev1 | Sa_v    | None | False |
-| :TMP:1 hybrid level:  | TMP_1hybridlevel  | tmp_hyblev1  | Sa_tbot | None | False |
-| :SPFH:1 hybrid level: | SPFH_1hybridlevel | spfh_hyblev1 | Sa_shum | where < 0 = 0. | False |
-
-### At 2 m above ground
-| GRIB2 | NetCDF variable name | Name in `datm_datamode_gefs_mod.F90`  | Checks and/or changes | Avg forecast | 
-| :--- | :--- | :--- | :--- | :-- |
-| :TMP:2 m above ground:  | t2m  | Sa_t2m  | where (TMP_SFC <= 271.35) t2m = 271.35 + t2m - TMP_SFC | False |
-| :SPFH:2 m above ground: | q2m  | Sa_q2m  | where <0 = 0. | False |
-
-### At 10 m above ground
-| GRIB2 | NetCDF variable name | Name in `datm_datamode_gefs_mod.F90`  | Checks and/or changes | Avg forecast | 
-| :--- | :--- | :--- | :--- | :-- |
-| :UGRD:10 m above ground: | u10m | Sa_u10m | None | False |
-| :VGRD:10 m above ground: | v10m | Sa_v10m | None | False |
+| GRIB2 variable name | wgrib2 to nc | Checks and/or changes | Avg forecast |
+| :--- | :--- | :---  | :--- |
+| **:LAND:surface:**  | `LAND_surface`  | None | False |
+| **:PRES:surface:**  | `PRES_surface`  | None | False |
+| **:TMP:surface:**   | `TMP_surface`   | None | False |
+| **:DLWRF:surface:** | `DLWRF_surface` | None. Conform sign | True |
+| **:VBDSF:surface:** | `VBDSF_surface` | where < 0 = 0. Confirm sign | True |
+| **:VDDSF:surface:** | `VDDSF_surface` | where < 0 = 0. Confirm sign | True |
+| **:NBDSF:surface:** | `NBDSF_surface` | where < 0 = 0. Confirm sign | True |
+| **:NDDSF:surface:** | `NDDSF_surface` | where < 0 = 0. Confirm sign | True |
+| **:CPOFP:surface:** | `CPOFP_surface` | Used to partition precip | False |
+| **:PRATE:surface:** | `PRATE_surface` | Total precip. where < 0 = 0. | True |
+| **:HGT:1 hybrid level:**  | `HGT_1hybridlevel`  | None | False |
+| **:UGRD:1 hybrid level:** | `UGRD_1hybridlevel` | None | False |
+| **:VGRD:1 hybrid level:** | `VGRD_1hybridlevel` | None | False |
+| **:TMP:1 hybrid level:**  | `TMP_1hybridlevel`  | None | False |
+| **:SPFH:1 hybrid level:** | `SPFH_1hybridlevel` | where < 0 = 0. | False |
+| **:TMP:2 m above ground:**   | `TMP_2maboveground`   | Used for `t2m` calc | False |
+| **:SPFH:2 m above ground:**  | `SPFH_2maboveground`  | where < 0 = 0. | False |
+| **:UGRD:10 m above ground:** | `UGRD_10maboveground` | None | False |
+| **:VGRD:10 m above ground:** | `VGRD_10maboveground` | None | False |
 
 ---
 
