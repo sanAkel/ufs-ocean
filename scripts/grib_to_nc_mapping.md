@@ -17,28 +17,38 @@
 ## Following is a listing of all input variables that are gathered from GDAS/GFS.
 
 ### Surface variables
-| GRIB2 | NetCDF variable name | Name in `datm_datamode_gefs_mod.F90`  | Checks and/or changes | Avg forecast | 
-| :---  | :--- | :--- | :--- | :-- |
-| :LAND:surface:  | slmsksfc  | Sa_mask    | None                         | False |
-| :ICEC:surface:  | N/A       | N/A        | None                         | False | 
-| :PRES:surface:  | N/A       | N/A        | None                         | False |
-| :TMP:surface:   | N/A       | N/A        | None                         | False |
-| :DLWRF:surface: | DLWRF     | Faxa_lwdn  | None. Conform sign           | True |
-| :VBDSF:surface: | vbdsf_ave | Faxa_swvdr | where < 0 = 0. Confirm sign  | True | 
-| :VDDSF:surface: | vddsf_ave | Faxa_swvdf | where < 0 = 0. Confirm sign  | True | 
-| :NBDSF:surface: | nbdsf_ave | Faxa_swndr | where < 0 = 0. Confirm sign  | True | 
-| :NDDSF:surface: | nddsf_ave | Faxa_swndf | where < 0 = 0. Confirm sign  | True | 
-| :CPOFP:surface: | N/A       | N/A        | Used to calculate partition of liquid/frozen precip | False |
-| :PRATE:surface: | N/A       | N/A        | Total precip. where < 0 = 0. | True |
+GRIB2 variable name,wgrib2 to nc,Checks and/or changes,Avg forecast,,
+-- | -- | -- | --
+:LAND:surface:  | LAND_surface  | None | False
+:PRES:surface:  | PRES_surface  | None | False
+:TMP:surface:   | TMP_surface   | None | False
+:DLWRF:surface: | DLWRF_surface | None. Conform sign | True
+:VBDSF:surface: | VBDSF_surface | where < 0 = 0. Confirm sign | True
+:VDDSF:surface: | VDDSF_surface | where < 0 = 0. Confirm sign | True
+:NBDSF:surface: | NBDSF_surface | where < 0 = 0. Confirm sign | True
+:NDDSF:surface: | NDDSF_surface | where < 0 = 0. Confirm sign | True
+:CPOFP:surface: | CPOFP_surface | Used to calculate partition of liquid/frozen precip | False
+:PRATE:surface: | PRATE_surface | Total precip. where < 0 = 0. | True
+
 
 ### Variables at the first hybrid (atmospheric pressure) level
-| GRIB2 | NetCDF variable name | Name in `datm_datamode_gefs_mod.F90`  | Checks and/or changes | Avg forecast | 
-| :--- | :--- | :--- | :--- | :-- |
-| :HGT:1 hybrid level:  | N/A          | N/A      None  | False |
-| :UGRD:1 hybrid level: | ugrd_hyblev1 | Sa_u    | None | False |
-| :VGRD:1 hybrid level: | vgrd_hyblev1 | Sa_v    | None | False |
-| :TMP:1 hybrid level:  | tmp_hyblev1  | Sa_tbot | None | False |
-| :SPFH:1 hybrid level: | spfh_hyblev1 | Sa_shum | where < 0 = 0. | False |
+GRIB2 variable name|wgrib2 to nc,Checks and/or changes,Avg forecast,,
+-- | -- | -- | --
+:HGT:1 hybrid level:,HGT_1hybridlevel,None,False,,
+:UGRD:1 hybrid level:,UGRD_1hybridlevel,None,False,,
+:VGRD:1 hybrid level:,VGRD_1hybridlevel,None,False,,
+:TMP:1 hybrid level:,TMP_1hybridlevel,None,False,,
+:SPFH:1 hybrid level:,SPFH_1hybridlevel,where < 0 = 0.,False,,
+
+
+
+| GRIB2 variable name | wgrib2 to nc | DATM nc file | Name in `datm_datamode_gefs_mod.F90`  | Checks and/or changes | Avg forecast | 
+| :---  | :--- | :--- | :--- | :--- | :-- |
+| :HGT:1 hybrid level:  | HGT_1hybridlevel  | N/A          | N/A      None  | False |
+| :UGRD:1 hybrid level: | UGRD_1hybridlevel | ugrd_hyblev1 | Sa_u    | None | False |
+| :VGRD:1 hybrid level: | VGRD_1hybridlevel | vgrd_hyblev1 | Sa_v    | None | False |
+| :TMP:1 hybrid level:  | TMP_1hybridlevel  | tmp_hyblev1  | Sa_tbot | None | False |
+| :SPFH:1 hybrid level: | SPFH_1hybridlevel | spfh_hyblev1 | Sa_shum | where < 0 = 0. | False |
 
 ### At 2 m above ground
 | GRIB2 | NetCDF variable name | Name in `datm_datamode_gefs_mod.F90`  | Checks and/or changes | Avg forecast | 
@@ -62,6 +72,20 @@
 | N/A                      | fprecp      | Faxa_snow | PRATE *    CPOFP*0.01  | True |
 
 
+| :ICEC:surface:  | ICEC_surface  | N/A       | N/A        | None                         | False | 
 | :PRES:surface:           | ?? pres_hyblev1 | Sa_pbot    | None | False |
 | :PRES:surface:           | ?? psurf        | Sa_pslv    | None | False |
 | ??                       | hgt_hyblev1 | Sa_z      | Do ?? with HGT_1hybridlevel | False |
+
+| GRIB2 variable name | wgrib2 to nc | DATM nc file | Name in `datm_datamode_gefs_mod.F90`  | Checks and/or changes | Avg forecast | 
+| :---  | :--- | :--- | :--- | :--- | :-- |
+| :LAND:surface:  | LAND_surface  | slmsksfc  | Sa_mask    | None                         | False |
+| :PRES:surface:  | PRES_surface  | N/A       | N/A        | None                         | False |
+| :TMP:surface:   | TMP_surface   | N/A       | N/A        | None                         | False |
+| :DLWRF:surface: | DLWRF_surface | DLWRF     | Faxa_lwdn  | None. Conform sign           | True |
+| :VBDSF:surface: | VBDSF_surface | vbdsf_ave | Faxa_swvdr | where < 0 = 0. Confirm sign  | True | 
+| :VDDSF:surface: | VDDSF_surface | vddsf_ave | Faxa_swvdf | where < 0 = 0. Confirm sign  | True | 
+| :NBDSF:surface: | NBDSF_surface | nbdsf_ave | Faxa_swndr | where < 0 = 0. Confirm sign  | True | 
+| :NDDSF:surface: | NDDSF_surface | nddsf_ave | Faxa_swndf | where < 0 = 0. Confirm sign  | True | 
+| :CPOFP:surface: | CPOFP_surface | N/A       | N/A        | Used to calculate partition of liquid/frozen precip | False |
+| :PRATE:surface: | PRATE_surface | N/A       | N/A        | Total precip. where < 0 = 0. | True |
