@@ -10,7 +10,7 @@ exit_err() {
 }
 
 if [ "$#" -lt 3 ]; then
-    echo "Usage: $0 <START_YYYYMMDD> <END_YYYYMMDD> <BASE_PATH> [PURGE_GRIB] [RUN_PARALLEL]"
+    echo "Usage: $0 <START_YYYYMMDD> <END_YYYYMMDD> <BASE_PATH> [PURGE_GRIB (Default: False)] [RUN_PARALLEL (Default: True)]"
     exit 1
 fi
 
@@ -20,20 +20,16 @@ BASE_PATH="${3}"
 PURGE_GRIB=${4:-"False"}
 RUN_PARALLEL=${5:-"True"}
 
-# 1. List of variables from https://github.com/sanAkel/ufs-ocean/blob/main/scripts/grib_to_nc_mapping.md
-# A. Instantaneous state variables
-G_INST=':LAND:surface:|:UGRD:1 hybrid level:|:VGRD:1 hybrid level:|:TMP:1 hybrid level:|:PRES:surface:|:SPFH:1 hybrid level:|:UGRD:10 m above ground:|:VGRD:10 m above ground:|:SPFH:2 m above ground:|:HGT:1 hybrid level:|:TMP:surface:|:TMP:2 m above ground:|:CPOFP:surface:'
+# 1. GRIB2 variable names
+var_surface=':(LAND|PRES|TMP|DLWRF|VBDSF|VDDSF|NBDSF|NDDSF|CPOFP|PRATE):(surface):'
+var_hyb_lev1=':(HGT|UGRD|VGRD|TMP|SPFH):(1 hybrid level):'
+var_2m=':(TMP|SPFH):(2 m above ground):'
+var_10m=':(UGRD|VGRD):(10 m above ground):'
 
-# 2. Averaged Fluxes
-G_FLUX=':DLWRF:surface:|:VBDSF:surface:|:VDDSF:surface:|:NBDSF:surface:|:NDDSF:surface:|:PRATE:surface:|:CPOFP:surface:'
+# Concatenate strings for wgrib2 search
+GRIB_SEARCH="${var_surface}|${var_hyb_lev1}|${var_2m}|${var_10m}"
 
-# C. Temperatures
-G_TEMP=':TMP:(surface|2 m above ground|1 hybrid level):'
-
-# Concatenate them
-GRIB_SEARCH="${G_INST}|${G_FLUX}|${G_TEMP}"
-
-# 1. FORCE wgrib2 to use only 1 thread per process to avoid OMP Resource Errors
+# 2. FORCE wgrib2 to use only 1 thread per process to avoid OMP Resource Errors
 export OMP_NUM_THREADS=1
 
 # Define the processing logic as a function for parallel/loop compatibility
@@ -51,7 +47,7 @@ process_file() {
       output_nc="${dir_path}/${base_filename%.grib2}.nc"
 
       echo "Processing: ${grib_file}"
-      # 2. Extract using wgrib2
+      # Extraction using wgrib2
       wgrib2 "${grib_file}" -match "${GRIB_SEARCH}" -netcdf "${output_nc}"
 
       if [[ -f "${output_nc}" && -s "${output_nc}" ]]; then
@@ -78,14 +74,11 @@ echo " Purge GRIB:    $PURGE_GRIB"
 echo " Run Parallel:  $RUN_PARALLEL | OMP_THREADS: $OMP_NUM_THREADS"
 echo "----------------------------------------------------------"
 
-# ... [Keep your variable definitions and process_file function as is] ...
-
 if [[ "${RUN_PARALLEL^^}" == "TRUE" ]]; then
     # --- Parallel Logic ---
     echo "Starting Parallel Extraction (Jobs: 4)..."
 
-    # Use find to list files, then use parallel to call the function.
-    # We wrap the arguments in single quotes to protect the regex pipes (|)
+    # Find files and pass to parallel with quoted variables to protect pipes
     find "${BASE_PATH}"/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]* -name "*.grib2" -print0 | \
     parallel -0 --jobs 4 "process_file {} '${GRIB_SEARCH}' '${PURGE_GRIB}'"
 else
