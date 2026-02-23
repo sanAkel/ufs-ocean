@@ -11,24 +11,32 @@ exit_err() {
 }
 
 if [ "$#" -lt 3 ]; then
-    echo "Usage: $0 <START_YYYYMMDD> <END_YYYYMMDD> <BASE_PATH> [PURGE_GRIB (Default: False)] [RUN_PARALLEL (Default: True)]"
+    echo "Usage: $0 <START_YYYYMMDD> <END_YYYYMMDD> <BASE_PATH> [CONFIG_FILE] [PURGE_GRIB (Default: False)] [RUN_PARALLEL (Default: True)]"
+    echo "Defaults:"
+    echo "  CONFIG_FILE:  ../parm/vars_GFSv16.3.txt"
+    echo "  PURGE_GRIB:   False"
+    echo "  RUN_PARALLEL: True"
     exit 1
 fi
 
 SDATE="${1}"
 EDATE="${2}"
 BASE_PATH="${3}"
-PURGE_GRIB=${4:-"False"}
-RUN_PARALLEL=${5:-"True"}
 
-# 1. GRIB2 variable names
-var_surface=':(LAND|PRES|TMP|DLWRF|VBDSF|VDDSF|NBDSF|NDDSF|CPOFP|PRATE):(surface):'
-var_hyb_lev1=':(HGT|UGRD|VGRD|TMP|SPFH):(1 hybrid level):'
-var_2m=':(TMP|SPFH):(2 m above ground):'
-var_10m=':(UGRD|VGRD):(10 m above ground):'
+# 1. Configuration File (Arg 4)
+VARS_ARG=${4:-"../parm/vars_GFSv16.3.txt"}
 
-# Concatenate strings for wgrib2 search
-GRIB_SEARCH="${var_surface}|${var_hyb_lev1}|${var_2m}|${var_10m}"
+# 2. Purge and Parallel Toggles (Args 5 and 6)
+PURGE_GRIB=${5:-"False"}
+RUN_PARALLEL=${6:-"True"}
+
+# 1. GRIB2 variable names - Resolve and source the configuration
+if [[ -f "${VARS_ARG}" ]]; then
+    VARS_CONFIG="${VARS_ARG}"
+    source "${VARS_CONFIG}"
+else
+    exit_err "Configuration file ${VARS_ARG} not found."
+fi
 
 # 2. FORCE wgrib2 to use only 1 thread per process to avoid OMP Resource Errors
 export OMP_NUM_THREADS=1

@@ -1,0 +1,11 @@
+# 
+# Outcome: "GRIB_SEARCH", must be defined.
+#
+# 1. GRIB2 variable names
+var_surface=':(LAND|PRES|TMP|DLWRF|VBDSF|VDDSF|NBDSF|NDDSF|CPOFP|PRATE):(surface):'
+var_hyb_lev1=':(HGT|UGRD|VGRD|TMP|SPFH):(1 hybrid level):'
+var_2m=':(TMP|SPFH):(2 m above ground):'
+var_10m=':(UGRD|VGRD):(10 m above ground):'
+
+# Concatenate strings for wgrib2 search
+GRIB_SEARCH="${var_surface}|${var_hyb_lev1}|${var_2m}|${var_10m}"
