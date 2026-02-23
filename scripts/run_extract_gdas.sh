@@ -1,7 +1,8 @@
 #!/bin/bash
 #==============================================================================
 # Script: run_extract_gdas.sh
-# Purpose: Extraction of variables from sflux grib2 file(s)
+# Purpose: Extraction of variables from sflux grib2 file(s).
+# Requirement: Needs wgrib2 module to be loaded.
 #==============================================================================
 
 exit_err() {
