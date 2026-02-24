@@ -54,6 +54,10 @@ case "${MACHINE_ID}" in
     "ursa")
         module load wgrib2/3.1.3_ncep
         module load nco/5.2.4
+
+        # Custom modules, e.g., python
+        module use /home/Santha.Akella/modulefiles
+        module load py_Feb2026
         ;;
     "wcoss2")
         module load wgrib2/2.0.8

@@ -6,7 +6,10 @@
 #==============================================================================
 
 if [ "$#" -ne 4 ]; then
+    echo " "
     echo "Usage: $0 <YYYYMMDD_START> <YYYYMMDD_END> <PLATFORM> <BASE_PATH>"
+    echo "Valid choices for PLATFORM: WCOSS, GAEA_C6, URSA"
+    echo " "
     exit 1
 fi
 
@@ -14,6 +17,8 @@ SDATE=$1
 EDATE=$2
 PLATFORM=$3
 BASE_PATH=$4
+
+source "machine_modules.sh"
 
 # Create the root base path if it doesn't exist
 mkdir -p "$BASE_PATH"
