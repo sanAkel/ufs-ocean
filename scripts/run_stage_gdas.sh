@@ -10,6 +10,8 @@ if [ "$#" -ne 4 ]; then
     echo "Usage: $0 <YYYYMMDD_START> <YYYYMMDD_END> <PLATFORM> <BASE_PATH>"
     echo "Valid choices for PLATFORM: WCOSS, GAEA_C6, URSA"
     echo " "
+    echo "Note: It is recommended to add/subtract one (1) day to the START and END dates, for time-interpolation."
+    echo " "
     exit 1
 fi
 
