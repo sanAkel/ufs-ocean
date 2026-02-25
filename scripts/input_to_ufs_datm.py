@@ -23,7 +23,7 @@ def load_individual_file(file_path, timestamp, index):
         # concatenation will fail, then uncomment the lines below:
         # ds = ds.expand_dims('time')
         # ds = ds.assign_coords(time=[timestamp])
-        
+
         # Load into memory to avoid 'too many open files' error during concat
         ds.load()
 
@@ -43,15 +43,17 @@ def main():
         print(f"FATAL ERROR: List file {args.input_list} not found.")
         sys.exit(1)
 
-    # 1. Read ascii file that lists path to grib2 files
+    # 1. Read ascii file that lists path to nc files
     datasets = []
+    first_ts = None
+    last_ts = None
     
     print(f"Reading file list from: {args.input_list}")
     
     with open(args.input_list, 'r') as f:
         lines = f.readlines()
 
-    # 2. Iterate through each of the grib2 files
+    # 2. Iterate through each of the files
     for i, line in enumerate(lines):
         parts = line.split()
         
@@ -61,6 +63,11 @@ def main():
             
         timestamp = parts[0]
         file_path = parts[1]
+
+        # Capture range for filename
+        if first_ts is None:
+            first_ts = timestamp
+        last_ts = timestamp
 
         # load each file 
         ds = load_individual_file(file_path, timestamp, i)
@@ -72,6 +79,12 @@ def main():
     if datasets:
         print(f"\nConcatenating {len(datasets)} files...")
         combined = xr.concat(datasets, dim='time')
+        
+        # Generate output name using the new prefix
+        output_name = f"ufs_datm_{first_ts}_{last_ts}.nc"
+        
+        print(f"Saving to: {output_name}")
+        combined.to_netcdf(output_name)
         print("Done.")
     else:
         print("No datasets were successfully loaded.")
