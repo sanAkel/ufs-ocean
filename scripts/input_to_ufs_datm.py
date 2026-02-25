@@ -36,12 +36,20 @@ def main():
     parser = argparse.ArgumentParser(description="Convert (GDAS/GFS) wgrib2 generated NetCDF (sflux) files to inputs for UFS DATM.")
     parser.add_argument("-i", "--input_list", required=True, 
                         help="Path to the ascii list file (e.g., rtofs_glo.20251229_20251231.listflx.nc.dat)")
+
+    parser.add_argument("-d", "--out_dir", required=True,
+                        help="Directory path where the output file should be written.")
     
     args = parser.parse_args()
 
     if not os.path.exists(args.input_list):
         print(f"FATAL ERROR: List file {args.input_list} not found.")
         sys.exit(1)
+
+    # Check/Create Output Directory
+    if not os.path.exists(args.out_dir):
+        print(f"Output path '{args.out_dir}' does not exist. Creating it now...")
+        os.makedirs(args.out_dir, exist_ok=True)
 
     # 1. Read ascii file that lists path to nc files
     datasets = []
@@ -80,11 +88,12 @@ def main():
         print(f"\nConcatenating {len(datasets)} files...")
         combined = xr.concat(datasets, dim='time')
         
-        # Generate output name using the new prefix
+        # Generate output name and join with out_dir
         output_name = f"ufs_datm_{first_ts}_{last_ts}.nc"
-        
-        print(f"Saving to: {output_name}")
-        combined.to_netcdf(output_name)
+        output_full_name = os.path.join(args.out_dir, output_name)
+
+        print(f"Saving to: {output_full_name}")
+        combined.to_netcdf(output_full_name)
         print("Done.")
     else:
         print("No datasets were successfully loaded.")
