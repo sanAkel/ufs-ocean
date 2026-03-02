@@ -43,6 +43,12 @@ Use [run_extract_gdas.sh](https://github.com/sanAkel/ufs-ocean/blob/main/scripts
 
 ---
 
+## Mapping of `wgrib2 to nc` :arrow_right: DATM nc file.
+
+| wgrib2 to nc | DATM nc file | Name in `datm_datamode_gefs_mod.F90`  | Checks and/or changes | Avg forecast | 
+| :---  | :--- | :--- | :--- | :--- |
+
+
 
 # Indirectely mapped variables
 | GRIB2 | NetCDF forcing file variable name | Name in `datm_datamode_gefs_mod.F90`  | Checks and/or changes | Avg forecast | 
