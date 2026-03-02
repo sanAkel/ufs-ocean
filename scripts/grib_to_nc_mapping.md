@@ -49,9 +49,6 @@ Use [run_extract_gdas.sh](https://github.com/sanAkel/ufs-ocean/blob/main/scripts
 | :---  | :--- | :--- | :--- | :-- |
 | N/A                      | precp       | Faxa_rain | PRATE * (1-CPOFP*0.01) | True |
 | N/A                      | fprecp      | Faxa_snow | PRATE *    CPOFP*0.01  | True |
-
-
-| :ICEC:surface:  | ICEC_surface  | N/A       | N/A        | None                         | False | 
 | :PRES:surface:           | ?? pres_hyblev1 | Sa_pbot    | None | False |
 | :PRES:surface:           | ?? psurf        | Sa_pslv    | None | False |
 | ??                       | hgt_hyblev1 | Sa_z      | Do ?? with HGT_1hybridlevel | False |
