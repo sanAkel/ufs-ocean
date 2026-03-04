@@ -17,27 +17,27 @@
 ## Following is a listing of all input variables that are gathered from GDAS/GFS.
 Surface, At the first hybrid (atmospheric pressure) level, 2 m and 10 m above ground
 
-| GRIB2 variable name | wgrib2 to nc | Checks and/or changes | Avg forecast |
-| :--- | :--- | :---  | :--- |
-| **:LAND:surface:**  | `LAND_surface`  | None | False |
-| **:PRES:surface:**  | `PRES_surface`  | None | False |
-| **:TMP:surface:**   | `TMP_surface`   | None | False |
-| **:DLWRF:surface:** | `DLWRF_surface` | None. Conform sign | True |
-| **:VBDSF:surface:** | `VBDSF_surface` | where < 0 = 0. Confirm sign | True |
-| **:VDDSF:surface:** | `VDDSF_surface` | where < 0 = 0. Confirm sign | True |
-| **:NBDSF:surface:** | `NBDSF_surface` | where < 0 = 0. Confirm sign | True |
-| **:NDDSF:surface:** | `NDDSF_surface` | where < 0 = 0. Confirm sign | True |
-| **:CPOFP:surface:** | `CPOFP_surface` | Used to partition precip | False |
-| **:PRATE:surface:** | `PRATE_surface` | Total precip. where < 0 = 0. | True |
-| **:HGT:1 hybrid level:**  | `HGT_1hybridlevel`  | None | False |
-| **:UGRD:1 hybrid level:** | `UGRD_1hybridlevel` | None | False |
-| **:VGRD:1 hybrid level:** | `VGRD_1hybridlevel` | None | False |
-| **:TMP:1 hybrid level:**  | `TMP_1hybridlevel`  | None | False |
-| **:SPFH:1 hybrid level:** | `SPFH_1hybridlevel` | where < 0 = 0. | False |
-| **:TMP:2 m above ground:**   | `TMP_2maboveground`   | Used for `t2m` calc | False |
-| **:SPFH:2 m above ground:**  | `SPFH_2maboveground`  | where < 0 = 0. | False |
-| **:UGRD:10 m above ground:** | `UGRD_10maboveground` | None | False |
-| **:VGRD:10 m above ground:** | `VGRD_10maboveground` | None | False |
+| GRIB2 variable name | wgrib2 to nc |
+| :--- | :--- |
+| **:LAND:surface:** | `LAND_surface` |
+| **:PRES:surface:** | `PRES_surface` |
+| **:TMP:surface:** | `TMP_surface` |
+| **:DLWRF:surface:** | `DLWRF_surface` |
+| **:VBDSF:surface:** | `VBDSF_surface` |
+| **:VDDSF:surface:** | `VDDSF_surface` |
+| **:NBDSF:surface:** | `NBDSF_surface` |
+| **:NDDSF:surface:** | `NDDSF_surface` |
+| **:CPOFP:surface:** | `CPOFP_surface` |
+| **:PRATE:surface:** | `PRATE_surface` |
+| **:HGT:1 hybrid level:** | `HGT_1hybridlevel` |
+| **:UGRD:1 hybrid level:** | `UGRD_1hybridlevel` |
+| **:VGRD:1 hybrid level:** | `VGRD_1hybridlevel` |
+| **:TMP:1 hybrid level:** | `TMP_1hybridlevel` |
+| **:SPFH:1 hybrid level:** | `SPFH_1hybridlevel` |
+| **:TMP:2 m above ground:** | `TMP_2maboveground` |
+| **:SPFH:2 m above ground:** | `SPFH_2maboveground` |
+| **:UGRD:10 m above ground:** | `UGRD_10maboveground` |
+| **:VGRD:10 m above ground:** | `VGRD_10maboveground` |
 
 Use [run_extract_gdas.sh](https://github.com/sanAkel/ufs-ocean/blob/main/scripts/run_extract_gdas.sh) to gather above variables.
 
@@ -45,10 +45,29 @@ Use [run_extract_gdas.sh](https://github.com/sanAkel/ufs-ocean/blob/main/scripts
 
 ## Mapping of `wgrib2 to nc` :arrow_right: DATM nc file.
 
-| wgrib2 to nc | DATM nc file | Name in `datm_datamode_gefs_mod.F90`  | Checks and/or changes | Avg forecast | 
+| wgrib2 to nc | DATM nc file | Name in `datm_datamode_gefs_modF90` | Checks and/or changes | Avg forecast |
 | :---  | :--- | :--- | :--- | :--- |
+| LAND_surface        | slmsksfc | Sa_mask    | None | False |
+| PRES_surface        | psfc     | Sa_pslv    | None | False |
+| TMP_surface         | tsfc     | Sa_tbot    | None | False |
+| DLWRF_surface       | dlwrf   | Faxa_lwdn  | None Confirm sign | True |
+| VBDSF_surface       | vbdsw   | Faxa_vbdsw | where < 0 = 0 Confirm sign | True |
+| VDDSF_surface       | vddsw   | Faxa_vddsw | where < 0 = 0 Confirm sign | True |
+| NBDSF_surface       | nbdsw   | Faxa_nbdsw | where < 0 = 0 Confirm sign | True |
+| NDDSF_surface       | nddsw   | Faxa_nddsw | where < 0 = 0 Confirm sign | True |
+| CPOFP_surface       | cpofp   | N/A | Used to partition precip | False |
+| PRATE_surface       | prate   | Faxa_rain / Faxa_snow | Total precip where < 0 = 0 | True |
+| HGT_1hybridlevel    | hgt_hyb | Sa_z       | None | False |
+| UGRD_1hybridlevel   | u_hyb   | Sa_u       | None | False |
+| VGRD_1hybridlevel   | v_hyb   | Sa_v       | None | False |
+| TMP_1hybridlevel    | t_hyb   | Sa_t       | None | False |
+| SPFH_1hybridlevel   | q_hyb   | Sa_shum    | where < 0 = 0 | False |
+| TMP_2maboveground   | t2m     | Sa_t2m     | Used for `t2m` calc | False |
+| SPFH_2maboveground  | q2m     | Sa_q2m     | where < 0 = 0 | False |
+| UGRD_10maboveground | u10m    | Sa_u10m    | None | False |
+| VGRD_10maboveground | v10m    | Sa_v10m    | None | False |
 
-
+---
 
 # Indirectely mapped variables
 | GRIB2 | NetCDF forcing file variable name | Name in `datm_datamode_gefs_mod.F90`  | Checks and/or changes | Avg forecast | 
